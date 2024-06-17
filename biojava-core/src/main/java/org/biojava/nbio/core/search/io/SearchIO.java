@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.NoSuchElementException;
+import java.util.Map;
 
 /**
  * Designed by Paolo Pavan.
@@ -39,7 +40,7 @@ import java.util.NoSuchElementException;
  */
 
 public class SearchIO implements Iterable<Result>{
-	static private HashMap<String,ResultFactory> extensionFactoryAssociation;
+	static private Map<String, ResultFactory> extensionFactoryAssociation;
 
 	final private ResultFactory factory;
 	final private File file;
@@ -140,7 +141,7 @@ public class SearchIO implements Iterable<Result>{
 	 */
 	private ResultFactory guessFactory(File f){
 		if (extensionFactoryAssociation == null){
-			extensionFactoryAssociation = new HashMap<String, ResultFactory>();
+			extensionFactoryAssociation = new HashMap<>();
 			ServiceLoader<ResultFactory> impl = ServiceLoader.load(ResultFactory.class);
 			for (ResultFactory loadedImpl : impl) {
 				List<String> fileExtensions = loadedImpl.getFileExtensions();

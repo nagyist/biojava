@@ -24,6 +24,8 @@ package demo;
 import java.io.File;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.biojava.nbio.core.sequence.ProteinSequence;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompound;
 import org.biojava.nbio.core.sequence.compound.AminoAcidCompoundSet;
@@ -94,12 +96,12 @@ public class ParseFastaFileDemo {
 		InputStream inStream = isp.getInputStream(f);
 
 
-		FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<ProteinSequence, AminoAcidCompound>(
+		FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<>(
 				inStream,
 				new GenericFastaHeaderParser<ProteinSequence, AminoAcidCompound>(),
 				new ProteinSequenceCreator(AminoAcidCompoundSet.getAminoAcidCompoundSet()));
 
-		LinkedHashMap<String, ProteinSequence> b;
+		Map<String, ProteinSequence> b;
 
 		int nrSeq = 0;
 

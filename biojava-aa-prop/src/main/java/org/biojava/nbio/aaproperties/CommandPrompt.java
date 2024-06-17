@@ -82,7 +82,7 @@ public class CommandPrompt {
 		else
 			output = System.out;
 		printHeader(output, propertyList, specificList, delimiter);
-		LinkedHashMap<String, ProteinSequence> a = readInputFile(inputLocation, aaTable);
+		Map<String, ProteinSequence> a = readInputFile(inputLocation, aaTable);
 		//Need for the last sequence
 		for(Entry<String, ProteinSequence> entry:a.entrySet()){
 			compute(output, entry.getValue().getOriginalHeader(), entry.getValue().getSequenceAsString().trim(), delimiter, aaTable, propertyList, specificList,
@@ -95,8 +95,8 @@ public class CommandPrompt {
 		/*
 		 * Parse input arguments
 		 */
-		List<Character> propertyList = new ArrayList<Character>();
-		List<Character> specificList = new ArrayList<Character>();
+		List<Character> propertyList = new ArrayList<>();
+		List<Character> specificList = new ArrayList<>();
 		String inputLocation = null;
 		String outputLocation = null;
 		String aminoAcidCompositionLocation = null;
@@ -169,7 +169,7 @@ public class CommandPrompt {
 		readInputAndGenerateOutput(outputLocation, propertyList, specificList, delimiter, inputLocation, aaTable, decimalPlace);
 	}
 
-	private static LinkedHashMap<String, ProteinSequence> readInputFile(String inputLocation, AminoAcidCompositionTable aaTable) throws Exception{
+	private static Map<String, ProteinSequence> readInputFile(String inputLocation, AminoAcidCompositionTable aaTable) throws Exception{
 		FileInputStream inStream = new FileInputStream(inputLocation);
 		CompoundSet<AminoAcidCompound>	set;
 		if(aaTable == null){
@@ -177,16 +177,16 @@ public class CommandPrompt {
 		}else{
 			set = aaTable.getAminoAcidCompoundSet();
 		}
-		LinkedHashMap<String, ProteinSequence> ret;
+		Map<String, ProteinSequence> ret;
 		if ( inputLocation.toLowerCase().contains(".gb")) {
-			GenbankReader<ProteinSequence, AminoAcidCompound> genbankReader = new GenbankReader<ProteinSequence, AminoAcidCompound>(
+			GenbankReader<ProteinSequence, AminoAcidCompound> genbankReader = new GenbankReader<>(
 					inStream, new GenericGenbankHeaderParser<ProteinSequence, AminoAcidCompound>(),
 					new ProteinSequenceCreator(set));
 			ret = genbankReader.process();
 
 
 		} else {
-			FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<ProteinSequence, AminoAcidCompound>(
+			FastaReader<ProteinSequence, AminoAcidCompound> fastaReader = new FastaReader<>(
 					inStream, new GenericFastaHeaderParser<ProteinSequence, AminoAcidCompound>(),
 					new ProteinSequenceCreator(set));
 			ret = fastaReader.process();
@@ -214,7 +214,7 @@ public class CommandPrompt {
 		 * 9 Composition of the 20 standard amino acid
 		 * 0 Composition of the specific amino acid
 		 */
-		List<String> sList = new ArrayList<String>();
+		List<String> sList = new ArrayList<>();
 		sList.add("SequenceName");
 		for(Character c:propertyList){
 			switch(c){
@@ -277,7 +277,7 @@ public class CommandPrompt {
 		IPeptideProperties pp = new PeptidePropertiesImpl();
 
 		int specificCount = 0;
-		List<Double> dList = new ArrayList<Double>();
+		List<Double> dList = new ArrayList<>();
 		for(Character c:propertyList){
 			switch(c){
 			case '1':

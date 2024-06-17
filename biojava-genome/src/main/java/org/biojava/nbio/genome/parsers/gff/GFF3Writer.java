@@ -26,6 +26,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -39,7 +41,7 @@ public class GFF3Writer {
 	 * @param chromosomeSequenceList
 	 * @throws Exception
 	 */
-	public void write(OutputStream outputStream, LinkedHashMap<String, ChromosomeSequence> chromosomeSequenceList) throws Exception {
+	public void write(OutputStream outputStream, Map<String, ChromosomeSequence> chromosomeSequenceList) throws Exception {
 
 		outputStream.write("##gff-version 3\n".getBytes());
 		for (String key : chromosomeSequenceList.keySet()) {
@@ -91,7 +93,7 @@ public class GFF3Writer {
 					outputStream.write(gff3line.getBytes());
 
 					String transcriptParentName = geneSequence.getAccession().getID() + "." + transcriptIndex;
-					ArrayList<CDSSequence> cdsSequenceList = new ArrayList<CDSSequence>(transcriptSequence.getCDSSequences().values());
+					ArrayList<CDSSequence> cdsSequenceList = new ArrayList<>(transcriptSequence.getCDSSequences().values());
 					Collections.sort(cdsSequenceList, new SequenceComparator());
 					for (CDSSequence cdsSequence : cdsSequenceList) {
 						gff3line = key + "\t" + cdsSequence.getSource() + "\t" + "CDS" + "\t" + cdsSequence.getBioBegin() + "\t" + cdsSequence.getBioEnd() + "\t";
@@ -117,7 +119,7 @@ public class GFF3Writer {
 
 	}
 
-	private String getGFF3Note(ArrayList<String> notesList) {
+	private String getGFF3Note(List<String> notesList) {
 		String notes = "";
 
 		if (notesList.size() > 0) {
